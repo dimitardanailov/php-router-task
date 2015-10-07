@@ -2,15 +2,14 @@
 
 namespace MVC\Model;
 
-class Article {
+class Article extends \Lib\Database\Database {
     
     public $database;
     
     public function __construct() {
-        parent::__construct();
-        
-        $this->object_of = "Article";
+        $this->object_of = "\MVC\Model\Article";
         $this->table = "articles";
+        $this->database = new \Lib\Database\Database();
     }
 
     /**
@@ -18,10 +17,22 @@ class Article {
      * @return object
      */
     public static function db() {
-        $instance = new Article();
-        $instance->database = new \Lib\Database\Database();
+        $instance = new \MVC\Model\Article();
         
         return $instance;
+    }
+    
+    public function getArticleId($id) {
+        $this->select('id, title, date, text');
+        $this->where('id = ?');
+        $this->limit(1);
+        $picture = $this->prepare(array('id' => $id));
+
+        if (!empty($picture)) {
+            return $picture[0];
+        } else {
+            return null;
+        }
     }
 }
 ?>

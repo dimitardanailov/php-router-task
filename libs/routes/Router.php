@@ -1,8 +1,12 @@
 <?php
 namespace Lib\Route;
 
+use \Exception as Exception;
+
 class Router {
     
+    const controllerNamespace = '\MVC\Controller\\';
+
     /**
      *
      * @var string $route
@@ -24,18 +28,62 @@ class Router {
     public function match() {
         $uri = $this->extractURI();
         $method = $_SERVER['REQUEST_METHOD'];
-        var_dump($_SERVER);
         
         foreach ($this->routes as $route) {
             
-
-            switch ($route->getRequestType()) {
-                case \Enum\RequestType::GET:
-                    echo 'here';
+            if ($route->isGetRequest($method)) { 
+                $route->updateTemplateURI();
+                
+                if ($route->URIisMatched($uri)) {
+                    $route->generateRequestParams($uri);
+                    $this->loadController($route);
                     break;
-                default:
-                    break;
-            } 
+                }
+            }
+        }
+    }
+    
+    /**
+     * Method try to load controller.
+     * Controller is valid if you exist and we can create a new istance.
+     * @param \Lib\Route\RouteLink $routeLink
+     * @throws Exception
+     */
+    private function loadController(RouteLink $routeLink) {
+        
+        $controllerName = $routeLink->getController() . 'Controller';
+        $filename = 'controllers/' . $controllerName . '.php';
+        
+        // Require Controller
+        if (file_exists($filename)) {
+            require_once $filename;
+            
+            $controllerNameWithNamespace = self::controllerNamespace . $controllerName;
+            $controller = new $controllerNameWithNamespace();
+            
+            $this->loadAction($routeLink, $controller);
+            
+        } else {
+            throw new Exception('Controller doesn\'t exist.');
+        }
+    }
+    
+    /**
+     * Method try load action.
+     * Action will be loaded if you exist and can be executed.
+     * @param \Lib\Route\RouteLink $routeLink
+     * @param type $controller
+     * @throws Exception
+     */
+    private function loadAction(RouteLink $routeLink, $controller) {
+        if ($routeLink->actionIsAccessible($controller)) {
+            $action = $routeLink->getAction();
+            
+            // Load Action
+            $controller->$action();
+            
+        } else {
+            throw new Exception('Action is not accessible');
         }
     }
     

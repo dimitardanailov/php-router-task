@@ -1,5 +1,5 @@
 <?php
-namespace Enum;
+namespace Enums\Enum;
 
 abstract class RequestType
 {
