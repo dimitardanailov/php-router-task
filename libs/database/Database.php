@@ -375,7 +375,7 @@ class Database {
      */
     public function create($tableData = NULL)
     {
-        $this->_query = 'INSERT into '.self::$config[ENV]['database'].'.`'.$this->table.'`';
+        $this->_query = 'INSERT into `'.self::$config[ENV]['database'].'`.`'.$this->table.'`';
 
         $currentDate = date('Y-m-d H:i:s');
 
@@ -415,7 +415,7 @@ class Database {
      */
     public function update(array $tableData, array $whereParams)
     {
-        $this->_query = 'UPDATE '.self::$config[ENV]['database'].'.`'.$this->table.'` SET ';
+        $this->_query = 'UPDATE `'.self::$config[ENV]['database'].'`.`'.$this->table.'` SET ';
 
         $currentDate = date('Y-m-d H:i:s');
 
@@ -532,7 +532,7 @@ class Database {
      */
     public function delete(array $tableData, $sign = '=')
     {
-        $this->_query = 'DELETE FROM '.self::$config[ENV]['database'].'.`'.$this->table.'` WHERE ';
+        $this->_query = 'DELETE FROM `'.self::$config[ENV]['database'].'`.`'.$this->table.'` WHERE ';
 
         $keys = array_keys($tableData);
         $values = array_values($tableData);
@@ -571,7 +571,7 @@ class Database {
      * @return boolean Indicates success. 0 or 1.
      */
     public function deleteWithDifferentClauses(array $tableData, array $signClauses) {
-        $this->_query = 'DELETE FROM ' . self::$config[ENV]['database'] . '.`' . $this->table . '` WHERE ';
+        $this->_query = 'DELETE FROM `' . self::$config[ENV]['database'] . '`.`' . $this->table . '` WHERE ';
 
         $keys = array_keys($tableData);
         $keySigns = array_values($signClauses);
@@ -649,7 +649,7 @@ class Database {
     public function prepare($bindParams = NULL)
     {
         $this->_query = $this->genereteSelect();
-
+        
         //echo $this->_query;
 
         $results = $this->_prepareRoutine($bindParams);
@@ -966,11 +966,13 @@ class Database {
             while ($stmt->fetch())
             {
                $object = new $this->object_of();
-               foreach ($row as $key => $val)
+               
+               foreach ($row as $key => $value)
                {
-
-                    $object->{"$key"} = $val;
+                   // $object->{"$key"} = $val;
+                   $object->setProperty($key, $value);
                }
+               
                array_push($results, $object);
             }
 
@@ -1012,6 +1014,7 @@ class Database {
     private function _prepareQuery()
     {
         $stmt = self::$_mysqli->prepare($this->_query);
+        
         if(!$stmt)
         {
             trigger_error("Cannot preparing query: ".self::$_mysqli->error, E_USER_WARNING);

@@ -39,6 +39,8 @@ class Router {
                     $this->loadController($route);
                     break;
                 }
+            } else if ($route->isPostRequest($method)) {
+                $this->loadController($route);
             }
         }
     }

@@ -3,6 +3,7 @@
 require_once 'libs/database/Database.php';
 require_once 'libs/database/DataValidation.php';
 
+require_once 'models/BaseModel.php';
 require_once 'models/Article.php';
 
 \Lib\Database\Database::$config = array(

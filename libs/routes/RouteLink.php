@@ -52,7 +52,15 @@ class RouteLink {
     }
     
     public function isGetRequest($method) {
-        return ($method == 'GET' && ($this->getRequestType() == Enum\RequestType::GET));
+        return ($method == Enum\RequestType::GET && ($this->getRequestType() == Enum\RequestType::GET));
+    }
+    
+    public function isPostRequest($method) {
+        $requestIsPost = (isset($_REQUEST['__method']) && $_REQUEST['__method'] == Enum\RequestType::POST);
+        $methodIsPost = $method == Enum\RequestType::POST;
+        $routeTypeIsPost = $this->getRequestType() == Enum\RequestType::POST;
+        
+        return ($methodIsPost && $requestIsPost && $routeTypeIsPost);
     }
     
     /**
