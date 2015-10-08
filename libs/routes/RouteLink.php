@@ -40,6 +40,10 @@ class RouteLink {
         return $this->requestType;
     }
     
+    public function requestTypeIsPutOrDeleteRequest() {
+        return ($this->requestType == \Enums\Enum\RequestType::PUT || $this->requestType == \Enums\Enum\RequestType::DELETE);
+    }
+    
     /**
      * Replace URI params with \Lib\Route params
      */
@@ -55,12 +59,19 @@ class RouteLink {
         return ($method == Enum\RequestType::GET && ($this->getRequestType() == Enum\RequestType::GET));
     }
     
-    public function isPostRequest($method) {
-        $requestIsPost = (isset($_REQUEST['__method']) && $_REQUEST['__method'] == Enum\RequestType::POST);
-        $methodIsPost = $method == Enum\RequestType::POST;
-        $routeTypeIsPost = $this->getRequestType() == Enum\RequestType::POST;
+    /**
+     * Function will detect if you $method is valid Enums\Enum\RequestType
+     * 
+     * @param type $method
+     * @param type $enumRequestType
+     * @return type
+     */
+    public function isValidRequest($method, $enumRequestType) {
+        $requestIsValid = (isset($_REQUEST['__method']) && ($_REQUEST['__method'] == $enumRequestType));
+        $methodIsValid = $method == \Enums\Enum\RequestType::POST;
+        $routeTypeIsValid = $this->getRequestType() == $enumRequestType;
         
-        return ($methodIsPost && $requestIsPost && $routeTypeIsPost);
+        return ($requestIsValid && $methodIsValid && $routeTypeIsValid);
     }
     
     /**

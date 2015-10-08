@@ -39,8 +39,14 @@ class Router {
                     $this->loadController($route);
                     break;
                 }
-            } else if ($route->isPostRequest($method)) {
+            } else if ($route->isValidRequest($method, $route->getRequestType())) {
+                if ($route->requestTypeIsPutOrDeleteRequest()) {
+                    $route->generateRequestParams($uri);
+                }
+                
                 $this->loadController($route);
+                
+                break;
             }
         }
     }

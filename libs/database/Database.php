@@ -444,7 +444,7 @@ class Database {
             $tableData[$key] = $val;
             $this->_paramTypeList .= $this->_determineType($val);
         }
-
+        
         $stmt = $this->_buildQuery($tableData);
 
         ($stmt->affected_rows) ? $result = true : $result = false;

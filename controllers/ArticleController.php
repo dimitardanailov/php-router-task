@@ -47,6 +47,24 @@ class ArticleController {
         
         $this->jsonHelper->responseJsonMessageByKeyAndValues('article_id', $id);
     }
+    
+    public function update() {  
+        if (isset($_REQUEST['id'])) {
+            
+            $this->model->fillModelByArray($_REQUEST);
+            
+            $id = $_REQUEST['id'];
+            $updateOperation = $this->model->updateRecordByFilterParams('id = ?', array($id));
+            
+            if (!empty($updateOperation)) {
+                $this->jsonHelper->responseJsonMessageByKeyAndValues('message', 'Record was updated.');
+            } else {
+                $this->jsonHelper->responseCustomError(Enum\ResponseError::INVALID_OPERATION, 'You can\'t update this record');
+            }
+        } else {
+            $this->jsonHelper->responseCustomError(Enum\ResponseError::INVALID_REQUEST, 'You need to have :id $_REQUEST param');
+        }        
+    }
 }
 
 ?>
