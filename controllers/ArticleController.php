@@ -65,6 +65,23 @@ class ArticleController {
             $this->jsonHelper->responseCustomError(Enum\ResponseError::INVALID_REQUEST, 'You need to have :id $_REQUEST param');
         }        
     }
+    
+    public function delete() {
+        if (isset($_REQUEST['id'])) {
+            $id = $_REQUEST['id'];
+            
+            $deleteOperation = $this->model->delete(array('id' => $id));
+            
+            if (!empty($deleteOperation)) {
+                $this->jsonHelper->responseJsonMessageByKeyAndValues('message', 'Record was deleted.');
+            } else {
+                $this->jsonHelper->responseCustomError(Enum\ResponseError::INVALID_OPERATION, 'You can\'t delete this record');
+            }
+            
+        } else {
+            $this->jsonHelper->responseCustomError(Enum\ResponseError::INVALID_REQUEST, 'You need to have :id $_REQUEST param');
+        }
+    }
 }
 
 ?>

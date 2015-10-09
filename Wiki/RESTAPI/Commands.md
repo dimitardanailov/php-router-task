@@ -13,4 +13,9 @@ curl --data "title=My Second Post&__method=PUT&date=2015-10-07&text=Lorem Ipsum"
 curl --data "title=My Second Post&__method=PUT&date=2015-10-07&text=Lorem Ipsum" http://localhost/RouteTask/news/14
 ```
 
+```bash
+# Delete Article
+curl --data "__method=DELETE" http://localhost/RouteTask/news/20
+```
+
   
