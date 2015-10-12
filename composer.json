@@ -1,0 +1,18 @@
+{
+    "name": "i/route-task",
+    "description": "Simple MVC Framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dimitar Danailov",
+            "email": "dimityr.danailov@gmail.com"
+        }
+    ],
+    "minimum-stability": "beta",
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "5.0.*",
+        "phpunit/php-invoker": "*",
+        "phpunit/dbunit": ">=1.2"
+    }
+}
