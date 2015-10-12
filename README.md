@@ -14,5 +14,5 @@ We using composer and PHPUnit. For more information please visit: [PHPUnit and C
 
 ```bash
 # Run phpunit
-vendor/bin/phpunit --bootstrap src/autoload.php {Name of test Case}
+vendor/bin/phpunit --bootstrap tests/autoload.php {Name of test Case}
 ```

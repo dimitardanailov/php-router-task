@@ -115,5 +115,3 @@ class RouteLink {
         $_REQUEST[$templateURIParam] = $URIParam;
     }
 }
-
-?>
